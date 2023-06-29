@@ -1,5 +1,5 @@
 # Web Academy
-## Esqueleto de aplicação com backend Express e frontend com React.
+## Esqueleto de aplicação com backend Express e frontend React.
 
 Para rodar a aplicação, execute os seguintes comandos:
 
