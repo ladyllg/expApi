@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
-import { createProduto, getAllProdutos, getProduto, updateProduto } from './produto.service';
+import { buscaProdutoPorNome, createProduto, getAllProdutos, getProduto, updateProduto } from './produto.service';
 import { Produto } from '../../models/Produto';
+import { CreateProdutoDto } from './produto.types';
 
 const index = async (req: Request, res: Response) => {
     try {
@@ -12,15 +13,14 @@ const index = async (req: Request, res: Response) => {
 }
 
 const create = async (req: Request, res: Response) => {
+    const produto = req.body as CreateProdutoDto;
     try {
-        const jaExiste = await produtoJaExiste(req.body.nome);
-        if (jaExiste) return res.status(400).json({
-            message: 'Produto já existe'
-        });
-        const produto = await createProduto(req.body);
-        res.status(201).json(produto);
+        if (await buscaProdutoPorNome(produto.nome))
+            return res.status(400).json({ message: 'Produto já existe' });
+        const newProduto = await createProduto(produto);
+        res.status(201).json(newProduto);
     } catch (e) {
-        res.status(500).json({ error: e });
+        res.status(500).json(e);
     }
 }
 
