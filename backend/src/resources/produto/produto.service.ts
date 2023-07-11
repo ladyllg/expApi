@@ -25,3 +25,8 @@ export const buscaProdutoPorNome = async (
 ): Promise<Produto | null> => {
     return await Produto.findOne({ where: { nome } });
 };
+
+  
+export const deleteProduto = async (id: string): Promise<number> => {
+    return await Produto.destroy({ where: { id } });
+};

@@ -17,6 +17,13 @@ import cookieParser from 'cookie-parser';
 import session from 'express-session';
 import { v4 as uuidv4 } from 'uuid';
 
+declare module 'express-session'{
+  interface SessionData {
+    uid: string,
+    tipoUsuarioId: string
+  }
+}
+
 const models = [VersaoDB, Usuario, TipoUsuario, Produto, Compra, CompraItem];
 
 export class Api {

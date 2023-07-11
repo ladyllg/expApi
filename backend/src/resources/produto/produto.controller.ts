@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { buscaProdutoPorNome, createProduto, getAllProdutos, getProduto, updateProduto } from './produto.service';
+import { buscaProdutoPorNome, createProduto, deleteProduto, getAllProdutos, getProduto, updateProduto } from './produto.service';
 import { Produto } from '../../models/Produto';
 import { CreateProdutoDto } from './produto.types';
 
@@ -47,6 +47,18 @@ const update = async (req: Request, res: Response) => {
     }
 }
 
-const remove = async (req: Request, res: Response) => { }
+const remove = async (req: Request, res: Response) => {
+    const { id } = req.params;
+    try {
+      const prod = await getProduto(id);
+      console.log(prod);
+      if (!prod) return res.status(400).json({ message: 'Produto não existe' });
+      await deleteProduto(id);
+      res.status(200).json({ message: 'Produto apagado' });
+    } catch (e) {
+      console.log(e);
+      res.status(500).json(e);
+    }
+};
 
 export default { index, create, read, update, remove }
